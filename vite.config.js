@@ -6,6 +6,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // krh1024.github.io is a user site, so the app is served from the domain root.
+  base: '/',
   plugins: [
     vue(),
     vueDevTools(),

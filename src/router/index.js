@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 
 // Routes mirrored from D:\pi\ras-blog\routes\web.php and routes/auth.php.
@@ -13,7 +13,8 @@ const boardRoute = (name, path) => ({
 })
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // Hash routing works on GitHub Pages without server-side route rewrites.
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', meta: { source: 'home' } },
     { path: '/admin', name: 'admin_home', meta: { requiresAuth: true } },
