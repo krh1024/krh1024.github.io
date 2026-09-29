@@ -40,3 +40,9 @@ __screenshots__/
 
 test-results/
 playwright-report/
+
+# Windows reserved device names (should never appear as real files)
+nul
+con
+prn
+aux

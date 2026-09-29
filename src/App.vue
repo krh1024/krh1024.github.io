@@ -66,10 +66,10 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
       </div>
       <div class="hero-note note-bottom" aria-hidden="true">
         <span class="note-line"></span>
-        <span>EST. WITH CURIOSITY</span>
+        <span>EST. WITH Codex</span>
       </div>
 
-      <div class="hero-index" aria-hidden="true"><span>01</span> / 03</div>
+      <!-- <div class="hero-index" aria-hidden="true"><span>01</span> / 03</div> -->
     </main>
 
     <main v-else class="route-content">
@@ -78,8 +78,8 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
 
     <footer class="site-footer">
       <span>© {{ currentYear }} DOCHIS BLOG</span>
-      <span>생각을 코드로, 경험을 기록으로.</span>
-      <a href="mailto:krh10240173@gmail.com">CONTACT <span aria-hidden="true">↗</span></a>
+      <span>생각을 코드로, 경험을 기록으로.<br>with AWS AI Kiro</span>
+      <a href="mailto:dochis1024@gmail.com">CONTACT <span aria-hidden="true">↗</span></a>
     </footer>
   </div>
 </template>

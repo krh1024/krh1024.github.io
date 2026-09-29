@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import LoginView from '../views/LoginView.vue'
+import RegisterView from '../views/RegisterView.vue'
 
 // Routes mirrored from D:\pi\ras-blog\routes\web.php and routes/auth.php.
 // Page components can be attached as the Vue screens are ported.
@@ -29,7 +31,7 @@ const router = createRouter({
     ]),
 
     { path: '/profile', name: 'profile.edit', meta: { requiresAuth: true } },
-    { path: '/register', name: 'register', meta: { guestOnly: true } },
+    { path: '/register', name: 'register', component: RegisterView, meta: { guestOnly: true } },
     { path: '/login', name: 'login', component: LoginView, meta: { guestOnly: true } },
     { path: '/forgot-password', name: 'password.request', meta: { guestOnly: true } },
     { path: '/reset-password/:token', name: 'password.reset', props: true, meta: { guestOnly: true } },
@@ -40,3 +42,17 @@ const router = createRouter({
 })
 
 export default router
+
+router.beforeEach((to) => {
+    const auth = useAuthStore()
+
+    // 인증이 필요한 페이지: 미로그인 시 로그인 페이지로 이동
+    if (to.meta.requiresAuth && !auth.isLoggedIn) {
+        return { name: 'login', query: { redirect: to.fullPath } }
+    }
+
+    // 로그인 전용 페이지(guestOnly): 이미 로그인된 경우 홈으로 이동
+    if (to.meta.guestOnly && auth.isLoggedIn) {
+        return { name: 'home' }
+    }
+})
