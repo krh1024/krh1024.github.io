@@ -106,7 +106,9 @@ export default {
                 })
 
                 const redirect = this.$route.query.redirect
-                await this.$router.replace(typeof redirect === 'string' ? redirect : '/')
+                // 외부 URL 오픈 리다이렉트 차단: /로 시작하는 내부 경로만 허용
+                const isSafe = typeof redirect === 'string' && redirect.startsWith('/')
+                await this.$router.replace(isSafe ? redirect : '/')
             } catch (error) {
                 const data = error.response?.data
 

@@ -46,3 +46,7 @@ nul
 con
 prn
 aux
+
+# Environment variables
+.env
+.env.*

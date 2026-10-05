@@ -9,7 +9,6 @@ export const useAuthStore = defineStore('auth', {
 
     getters: {
         isLoggedIn: (state) => Boolean(state.token),
-        isAdmin: (state) => state.user?.email === import.meta.env.VITE_ADMIN_EMAIL,
     },
 
     actions: {

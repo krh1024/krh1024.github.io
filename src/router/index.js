@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import AdminHomeView from '../views/admin/AdminHomeView.vue'
+import AdminSetMenuView from '../views/admin/AdminSetMenuView.vue'
 
 // Routes mirrored from D:\pi\ras-blog\routes\web.php and routes/auth.php.
 // Page components can be attached as the Vue screens are ported.
@@ -19,8 +21,8 @@ const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', meta: { source: 'home' } },
-    { path: '/admin', name: 'admin_home', meta: { requiresAuth: true } },
-    { path: '/admin/set/menu', name: 'admin_set_menu', meta: { requiresAuth: true, requiresVerified: true } },
+    { path: '/admin', name: 'admin_home', component: AdminHomeView, meta: { requiresAuth: true } },
+    { path: '/admin/set/menu', name: 'admin_set_menu', component: AdminSetMenuView, meta: { requiresAuth: true } },
     { path: '/isAdmin', name: 'api_is_admin', meta: { source: 'server-endpoint', method: 'POST' } },
 
     ...boardSegments.flatMap((segment) => [

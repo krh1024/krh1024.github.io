@@ -27,9 +27,9 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
 <template>
   <div class="site-shell">
     <header class="site-header">
-      <RouterLink class="brand" to="/" aria-label="Dochis Blog 홈">
-        <span class="brand-mark">D</span>
-        <span>doch<span class="brand-accent">is</span></span>
+      <RouterLink class="brand" to="/" aria-label="Kim Dochi Blog 홈">
+        <span class="brand-mark">Kim</span>
+        <span class="brand-accent">dochi</span>
       </RouterLink>
 
       <nav class="main-nav" aria-label="메인 메뉴">
@@ -38,9 +38,9 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
         </RouterLink>
       </nav>
 
-      <RouterLink class="login-link" to="/login">
+      <!-- <RouterLink class="login-link" to="/login">
         로그인 <span aria-hidden="true">↗</span>
-      </RouterLink>
+      </RouterLink> -->
     </header>
 
     <main v-if="isHome" class="home-main" :style="{ '--hero-color': colors[colorIndex] }">
@@ -77,7 +77,7 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
     </main>
 
     <footer class="site-footer">
-      <span>© {{ currentYear }} DOCHIS BLOG</span>
+      <span>© {{ currentYear }} Kim Dochi BLOG</span>
       <span>생각을 코드로, 경험을 기록으로.<br>with AWS AI Kiro</span>
       <a href="mailto:dochis1024@gmail.com">CONTACT <span aria-hidden="true">↗</span></a>
     </footer>
