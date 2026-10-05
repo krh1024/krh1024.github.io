@@ -1,29 +1,3 @@
-<script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { RouterLink, RouterView, useRoute } from 'vue-router'
-
-const route = useRoute()
-const currentYear = new Date().getFullYear()
-const colors = ['#d7f2e9', '#e8e2fb', '#fae7dc', '#dfeaf8', '#f4efcf']
-const colorIndex = ref(0)
-let colorTimer
-
-const isHome = computed(() => route.name === 'home')
-const menuItems = [
-  { label: '서버 사이드', to: '/serverside' },
-  { label: '클라이언트 사이드', to: '/clientside' },
-  { label: '일상', to: '/tt' },
-]
-
-onMounted(() => {
-  colorTimer = window.setInterval(() => {
-    colorIndex.value = (colorIndex.value + 1) % colors.length
-  }, 10000)
-})
-
-onBeforeUnmount(() => window.clearInterval(colorTimer))
-</script>
-
 <template>
   <div class="site-shell">
     <header class="site-header">
@@ -53,7 +27,7 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
           작은 기록이 다음 한 걸음을 더 쉽게 만들어 주니까요.
         </p>
         <div class="hero-actions">
-          <RouterLink class="primary-button" to="/serverside">
+          <RouterLink v-if="firstMenuPath" class="primary-button" :to="firstMenuPath">
             글 둘러보기 <span aria-hidden="true">→</span>
           </RouterLink>
           <span class="hero-caption">기록은 계속 업데이트됩니다</span>
@@ -68,8 +42,6 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
         <span class="note-line"></span>
         <span>EST. WITH Codex</span>
       </div>
-
-      <!-- <div class="hero-index" aria-hidden="true"><span>01</span> / 03</div> -->
     </main>
 
     <main v-else class="route-content">
@@ -83,6 +55,76 @@ onBeforeUnmount(() => window.clearInterval(colorTimer))
     </footer>
   </div>
 </template>
+
+<script>
+import { RouterLink, RouterView } from 'vue-router'
+import api from '@/composables/useApi'
+
+// API 응답 전까지 노출할 기본 메뉴
+const FALLBACK_MENUS = [
+    { label: '서버 사이드', to: '/serverside' },
+    { label: '클라이언트 사이드', to: '/clientside' },
+    { label: '일상', to: '/tt' },
+]
+
+export default {
+    name: 'App',
+
+    components: { RouterLink, RouterView },
+
+    data() {
+        return {
+            menuItems:  [...FALLBACK_MENUS],
+            colorIndex: 0,
+            colorTimer: null,
+            currentYear: new Date().getFullYear(),
+            colors: ['#d7f2e9', '#e8e2fb', '#fae7dc', '#dfeaf8', '#f4efcf'],
+        }
+    },
+
+    computed: {
+        isHome() {
+            return this.$route.name === 'home'
+        },
+        // 홈 "글 둘러보기" 버튼이 링크할 첫 번째 메뉴 경로
+        firstMenuPath() {
+            return this.menuItems[0]?.to ?? null
+        },
+    },
+
+    mounted() {
+        this.colorTimer = window.setInterval(() => {
+            this.colorIndex = (this.colorIndex + 1) % this.colors.length
+        }, 10000)
+
+        this.loadMenus()
+    },
+
+    beforeUnmount() {
+        window.clearInterval(this.colorTimer)
+    },
+
+    methods: {
+        async loadMenus() {
+            try {
+                const { data } = await api.get('/api/get/menu')
+                if (data.flag && Array.isArray(data.items) && data.items.length > 0) {
+                    // depth=1인 최상위 메뉴만 헤더 nav에 표시
+                    this.menuItems = data.items
+                        .filter((m) => m.menuLevel === 1)
+                        .map((m) => ({
+                            label: m.menuName,
+                            to:    `/${m.menuEngName}`,
+                        }))
+                }
+                // 응답이 비었거나 flag=false 면 FALLBACK_MENUS 유지
+            } catch {
+                // 네트워크 오류 등 — FALLBACK_MENUS 유지
+            }
+        },
+    },
+}
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
