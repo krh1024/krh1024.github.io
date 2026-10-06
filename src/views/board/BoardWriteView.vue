@@ -107,7 +107,30 @@ export default {
         }
     },
 
+    watch: {
+        // 2026-10-06 by codex (User: user) - 같은 컴포넌트 재사용 시 라우트 변경 감지
+        // board_write / board_update 가 동일 컴포넌트를 사용하므로
+        // 경로 또는 updateId 가 바뀌어도 created()가 재실행되지 않아 폼이 초기화되지 않는 문제 방지
+        async $route(to, from) {
+            if (to.path !== from.path || to.query.updateId !== from.query.updateId) {
+                this.resetForm()
+                if (this.updateId) {
+                    await this.loadUpdateItem()
+                }
+            }
+        },
+    },
+
     methods: {
+        resetForm() {
+            this.noticeFlag   = 0
+            this.starScore    = 1
+            this.title        = ''
+            this.updateDesc   = null
+            this.errors       = {}
+            this.errorMessage = ''
+        },
+
         async loadUpdateItem() {
             try {
                 const { data } = await api.post('/api/board/read', { no: this.updateId })

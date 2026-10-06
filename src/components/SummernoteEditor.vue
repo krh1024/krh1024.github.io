@@ -32,6 +32,17 @@ export default {
         this.initEditor()
     },
 
+    watch: {
+        // 2026-10-06 by codex (User: user) - updateDesc prop 변경 시 에디터 내용 갱신
+        // 같은 컴포넌트 재사용으로 인해 mounted()가 재실행되지 않을 때
+        // 부모에서 내려오는 새 updateDesc를 에디터에 반영
+        updateDesc(val) {
+            if (val !== null && window.$ && window.$('#summernote').data('summernote')) {
+                window.$('#summernote').summernote('code', val)
+            }
+        },
+    },
+
     beforeUnmount() {
         if (window.$ && window.$('#summernote').length) {
             window.$('#summernote').summernote('destroy')
