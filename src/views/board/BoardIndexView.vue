@@ -197,8 +197,9 @@ export default {
         },
 
         thumbUrl(path) {
+            // 2026-10-06 by codex (User: user) - https?:// 정규식으로 체크 통일 (http 단순 비교 → 정규식)
             const base = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? ''
-            return path.startsWith('http') ? path : `${base}${path}`
+            return /^https?:\/\//i.test(path) ? path : `${base}${path.startsWith('/') ? '' : '/'}${path}`
         },
 
         async deleteSelected() {
