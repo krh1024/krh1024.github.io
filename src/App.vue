@@ -7,9 +7,24 @@
       </RouterLink>
 
       <nav class="main-nav" aria-label="메인 메뉴">
-        <RouterLink v-for="item in menuItems" :key="item.to" :to="item.to">
-          {{ item.label }}
-        </RouterLink>
+        <ul class="nav-list">
+          <li
+            v-for="item in menuItems"
+            :key="item.to"
+            class="nav-item"
+          >
+            <RouterLink v-if="!item.submenu || item.submenu.length === 0" :to="item.to">
+              {{ item.label }}
+            </RouterLink>
+            <span v-else class="nav-parent">{{ item.label }}</span>
+
+            <ul v-if="item.submenu && item.submenu.length > 0" class="submenu">
+              <li v-for="sub in item.submenu" :key="sub.to">
+                <RouterLink :to="sub.to">{{ sub.label }}</RouterLink>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </nav>
 
       <!-- <RouterLink class="login-link" to="/login">
@@ -62,9 +77,9 @@ import api from '@/composables/useApi'
 
 // API 응답 전까지 노출할 기본 메뉴
 const FALLBACK_MENUS = [
-    { label: '서버 사이드', to: '/serverside' },
-    { label: '클라이언트 사이드', to: '/clientside' },
-    { label: '일상', to: '/tt' },
+    { label: '서버 사이드', to: '/serverside', submenu: [] },
+    { label: '클라이언트 사이드', to: '/clientside', submenu: [] },
+    { label: '일상', to: '/tt', submenu: [] },
 ]
 
 export default {
@@ -109,12 +124,18 @@ export default {
             try {
                 const { data } = await api.get('/api/get/menu')
                 if (data.flag && Array.isArray(data.items) && data.items.length > 0) {
-                    // depth=1인 최상위 메뉴만 헤더 nav에 표시
+                    // depth=1인 최상위 메뉴와 서브메뉴 배열을 함께 보존
                     this.menuItems = data.items
                         .filter((m) => m.menuLevel === 1)
                         .map((m) => ({
-                            label: m.menuName,
-                            to:    `/${m.menuEngName}`,
+                            label:   m.menuName,
+                            to:      `/${m.menuEngName}`,
+                            submenu: Array.isArray(m.submenu)
+                                ? m.submenu.map((s) => ({
+                                      label: s.menuName,
+                                      to:    `/${m.menuEngName}/${s.menuEngName}`,
+                                  }))
+                                : [],
                         }))
                 }
                 // 응답이 비었거나 flag=false 면 FALLBACK_MENUS 유지
@@ -161,9 +182,21 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .brand { display: inline-flex; width: fit-content; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -1px; }
 .brand-mark { display: grid; width: 31px; height: 31px; place-items: center; border-radius: 10px 10px 10px 3px; background: #1c352a; color: #f2f5ec; font-size: 17px; }
 .brand-accent { color: #73a787; }
-.main-nav { display: flex; align-items: center; gap: clamp(22px, 3.1vw, 48px); }
-.main-nav a { color: #737c75; font-size: 12px; font-weight: 600; transition: color .2s ease; }
-.main-nav a:hover, .main-nav a.router-link-active { color: #1b352a; }
+.main-nav { display: flex; align-items: center; }
+.nav-list { display: flex; align-items: center; gap: clamp(22px, 3.1vw, 48px); list-style: none; margin: 0; padding: 0; }
+.nav-item { position: relative; }
+.nav-item > a,
+.nav-item > .nav-parent { color: #737c75; font-size: 12px; font-weight: 600; transition: color .2s ease; cursor: pointer; white-space: nowrap; }
+.nav-item > a:hover,
+.nav-item > a.router-link-active,
+.nav-item:hover > .nav-parent { color: #1b352a; }
+
+/* 서브메뉴 — 기본 숨김 */
+.submenu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); z-index: 100; min-width: 140px; list-style: none; margin: 0; padding: 4px 0; background: #fff; border: 1px solid #e8ebe5; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+/* 탑메뉴 hover 시 서브메뉴 표시 */
+.nav-item:hover .submenu { display: block; }
+.submenu li a { display: block; padding: 8px 18px; color: #5a6a5e; font-size: 12px; font-weight: 500; white-space: nowrap; transition: background .15s, color .15s; }
+.submenu li a:hover { background: #eef4f0; color: #1b352a; }
 .login-link { justify-self: end; padding: 11px 16px; border: 1px solid #dce2db; border-radius: 4px; font-size: 11px; font-weight: 700; transition: background .2s, border-color .2s; }
 .login-link span { margin-left: 9px; color: #7ca58a; }
 .login-link:hover { border-color: #1c352a; background: #1c352a; color: white; }
