@@ -42,25 +42,22 @@ export default {
         initEditor() {
             const $this = this
 
-            // jQuery 로드
-            const jqueryScript = document.createElement('script')
-            jqueryScript.src = 'https://code.jquery.com/jquery-3.4.1.min.js'
-            document.head.appendChild(jqueryScript)
+            // 2026-10-06 by codex (User: user) - 스크립트 중복 로드 방지 처리
+            // 수정 완료 후 재진입 시 script 태그가 이미 존재하면 onload가 발화되지 않아
+            // summernote 초기화가 누락되는 문제를 방지하기 위해 로드 여부를 먼저 확인
+            const jqueryLoaded     = !!window.jQuery
+            const summernoteLoaded = jqueryLoaded && !!window.$.fn?.summernote
 
-            // Summernote CSS 로드
-            const summernoteCss = document.createElement('link')
-            summernoteCss.href = 'https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css'
-            summernoteCss.rel = 'stylesheet'
-            document.head.appendChild(summernoteCss)
+            // Summernote CSS — 중복 삽입 방지
+            if (!document.querySelector('link[href*="summernote-lite.min.css"]')) {
+                const summernoteCss = document.createElement('link')
+                summernoteCss.href = 'https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css'
+                summernoteCss.rel = 'stylesheet'
+                document.head.appendChild(summernoteCss)
+            }
 
-            // Summernote JS 로드 (jQuery 로드 완료 후)
-            jqueryScript.onload = function () {
-                const summernoteScript = document.createElement('script')
-                summernoteScript.src = 'https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js'
-                document.head.appendChild(summernoteScript)
-
-                summernoteScript.onload = function () {
-                    window.$('#summernote').summernote({
+            const initSummernote = () => {
+                window.$('#summernote').summernote({
                         lang: 'ko-KR',
                         placeholder: '본문을 입력하세요',
                         tabsize: 2,
@@ -122,7 +119,28 @@ export default {
                                 }
                             },
                         },
-                    })
+                })
+            }
+
+            if (summernoteLoaded) {
+                // jQuery·Summernote 모두 이미 로드된 경우 바로 초기화
+                initSummernote()
+            } else if (jqueryLoaded) {
+                // jQuery는 있지만 Summernote가 없는 경우
+                const summernoteScript = document.createElement('script')
+                summernoteScript.src = 'https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js'
+                document.head.appendChild(summernoteScript)
+                summernoteScript.onload = initSummernote
+            } else {
+                // jQuery·Summernote 모두 없는 경우 (최초 진입)
+                const jqueryScript = document.createElement('script')
+                jqueryScript.src = 'https://code.jquery.com/jquery-3.4.1.min.js'
+                document.head.appendChild(jqueryScript)
+                jqueryScript.onload = function () {
+                    const summernoteScript = document.createElement('script')
+                    summernoteScript.src = 'https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js'
+                    document.head.appendChild(summernoteScript)
+                    summernoteScript.onload = initSummernote
                 }
             }
         },
