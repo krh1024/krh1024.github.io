@@ -64,6 +64,7 @@
 import { RouterLink } from 'vue-router'
 import { useBoardStore } from '@/stores/board'
 import api from '@/composables/useApi'
+import { injectBaseUrl } from '@/utils/injectBaseUrl'
 import SummernoteEditor from '@/components/SummernoteEditor.vue'
 
 export default {
@@ -139,7 +140,9 @@ export default {
                     this.title       = item.제목
                     this.noticeFlag  = item.공지유무
                     this.starScore   = item.난이도 ?? 1
-                    this.updateDesc  = item.내용
+                    // 2026-10-06 by codex (User: user) - 이미지 src 상대 경로에 API 베이스 URL 주입
+                    // 에디터 내 이미지가 도메인 없는 경로로 저장된 경우 깨지는 문제 방지
+                    this.updateDesc  = injectBaseUrl(item.내용)
                 }
             } catch {
                 this.errorMessage = '게시물 정보를 불러오지 못했습니다.'

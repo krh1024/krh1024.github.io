@@ -42,6 +42,7 @@ import { RouterLink } from 'vue-router'
 import { useBoardStore } from '@/stores/board'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/composables/useApi'
+import { injectBaseUrl } from '@/utils/injectBaseUrl'
 
 export default {
     name: 'BoardReadView',
@@ -95,12 +96,7 @@ export default {
                     // 2026-10-06 by codex (User: user) - 이미지 src 상대 경로에 API 베이스 URL 주입
                     // v-html 렌더링 시 도메인 없는 src는 프론트 서버 기준으로 해석되어 이미지 로드 실패
                     // 응답 수신 시점에 한 번만 치환하여 처리
-                    const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
-                    data.items.내용 = (data.items.내용 ?? '').replace(
-                        /<img([^>]*?)\ssrc="(?!https?:\/\/)([^"]+)"/gi,
-                        (_, attrs, path) =>
-                            `<img${attrs} src="${baseUrl}${path.startsWith('/') ? '' : '/'}${path}"`,
-                    )
+                    data.items.내용 = injectBaseUrl(data.items.내용)
                     this.item = data.items
                 } else {
                     this.errorMessage = data.message ?? '게시물을 불러오지 못했습니다.'
