@@ -120,7 +120,7 @@ export default {
 .board-banner h2 { margin: 0; color: #fff; font-size: clamp(24px, 3vw, 36px); font-weight: 700; letter-spacing: -.05em; }
 
 /* 컨테이너 */
-.read-container { max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+.read-container { max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 5rem; overflow-x: hidden; }
 
 /* 버튼 바 */
 .btn-bar { display: flex; gap: 8px; margin-bottom: 1.75rem; }
