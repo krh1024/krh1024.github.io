@@ -166,9 +166,7 @@ body { min-width: 320px; min-height: 100vh; margin: 0; }
 a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 
-/* 2026-10-06 by codex (User: user) - overflow: hidden → overflow-x: hidden
-   세로 overflow: hidden 은 모바일에서 긴 본문이 잘리는 원인이므로 가로만 제한 */
-.site-shell { display: flex; min-height: 100vh; flex-direction: column; overflow-x: hidden; }
+.site-shell { display: flex; min-height: 100vh; flex-direction: column; overflow: hidden; }
 .site-header {
   position: relative;
   z-index: 2;
