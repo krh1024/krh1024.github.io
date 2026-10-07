@@ -257,5 +257,6 @@ h1 span { color: #568069; }
    scoped :deep() 은 빌드 후 해시 선택자로 인라인 스타일을 이기지 못하므로 전역 CSS로 처리 */
 .contents-bar * { white-space: normal !important; overflow-wrap: anywhere; }
 .contents-bar pre { white-space: pre-wrap !important; }
+.contents-bar img { width: 100%; height: auto; }
 .title-bar * { overflow-wrap: anywhere; }
 </style>
