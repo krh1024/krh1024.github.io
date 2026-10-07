@@ -120,7 +120,7 @@ export default {
 .board-banner h2 { margin: 0; color: #fff; font-size: clamp(24px, 3vw, 36px); font-weight: 700; letter-spacing: -.05em; }
 
 /* 컨테이너 */
-.read-container { max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+.read-container { max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 5rem; overflow-x: hidden; }
 
 /* 버튼 바 */
 .btn-bar { display: flex; gap: 8px; margin-bottom: 1.75rem; }
@@ -142,8 +142,8 @@ export default {
 
 /* 본문 */
 /* 2026-10-06 by codex (User: user) - 모바일 최적화: 본문 내 넓은 요소로 인한 가로 넘침 방지 */
-.contents-bar { line-height: 1.85; color: #2c3e30; overflow-x: hidden; }
-.contents-bar :deep(*) { color: revert; }
+.contents-bar { line-height: 1.85; color: #2c3e30; }
+.contents-bar :deep(*) { color: revert; max-width: 100%; word-break: break-word; }
 .contents-bar :deep(img) { max-width: 100%; height: auto; }
 .contents-bar :deep(pre) { overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
 .contents-bar :deep(table) { display: block; border-collapse: collapse; width: 100%; overflow-x: auto; }
