@@ -141,7 +141,7 @@ export default {
 .post-meta { display: flex; gap: 16px; color: #8a9a8d; font-size: 12px; }
 
 /* 본문 */
-.contents-bar { line-height: 1.85; color: #2c3e30; }
+.contents-bar { line-height: 1.85; color: #2c3e30; overflow-wrap: anywhere; }
 .contents-bar :deep(*) { color: revert; }
 .contents-bar :deep(img) { max-width: 100%; height: auto; }
 .contents-bar :deep(pre) { overflow-x: auto; }

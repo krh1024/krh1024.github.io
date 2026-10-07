@@ -267,7 +267,7 @@ export default {
 /* 포스트 정보 */
 .post-info { padding: 14px 16px 16px; }
 .notice-badge { display: inline-block; margin: 0 0 6px; padding: 2px 8px; border-radius: 3px; background: #1e3027; color: #fff; font-size: 10px; font-weight: 700; }
-.post-title { margin: 0 0 8px; color: #1a3025; font-size: 14px; font-weight: 600; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-all; }
+.post-title { margin: 0 0 8px; color: #1a3025; font-size: 14px; font-weight: 600; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
 .post-meta { margin: 0; color: #8a9a8d; font-size: 11px; }
 
 /* 페이지네이션 */
