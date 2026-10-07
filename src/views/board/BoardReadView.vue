@@ -141,11 +141,10 @@ export default {
 .post-meta { display: flex; gap: 16px; color: #8a9a8d; font-size: 12px; }
 
 /* 본문 */
-/* 2026-10-06 by codex (User: user) - white-space: pre 인라인 스타일로 인한 모바일 텍스트 가로 잘림 방지 */
 .contents-bar { line-height: 1.85; color: #2c3e30; }
-.contents-bar :deep(*) { color: revert; white-space: normal !important; }
+.contents-bar :deep(*) { color: revert; }
 .contents-bar :deep(img) { max-width: 100%; height: auto; }
-.contents-bar :deep(pre) { overflow-x: auto; white-space: pre-wrap !important; }
+.contents-bar :deep(pre) { overflow-x: auto; }
 .contents-bar :deep(table) { border-collapse: collapse; width: 100%; }
 .contents-bar :deep(td), .contents-bar :deep(th) { border: 1px solid #d0d7d3; padding: 6px 10px; }
 
