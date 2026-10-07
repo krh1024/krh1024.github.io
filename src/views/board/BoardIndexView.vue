@@ -198,7 +198,8 @@ export default {
 
         thumbUrl(path) {
             // 2026-10-06 by codex (User: user) - https?:// 정규식으로 체크 통일 (http 단순 비교 → 정규식)
-            const base = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? ''
+            // VITE_API_BASE_URL 이 빈 값일 경우 하드코딩 fallback 사용
+            const base = (import.meta.env.VITE_API_BASE_URL || 'https://kimdochi-api.duckdns.org').replace(/\/$/, '')
             return /^https?:\/\//i.test(path) ? path : `${base}${path.startsWith('/') ? '' : '/'}${path}`
         },
 
@@ -266,7 +267,7 @@ export default {
 /* 포스트 정보 */
 .post-info { padding: 14px 16px 16px; }
 .notice-badge { display: inline-block; margin: 0 0 6px; padding: 2px 8px; border-radius: 3px; background: #1e3027; color: #fff; font-size: 10px; font-weight: 700; }
-.post-title { margin: 0 0 8px; color: #1a3025; font-size: 14px; font-weight: 600; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.post-title { margin: 0 0 8px; color: #1a3025; font-size: 14px; font-weight: 600; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-all; }
 .post-meta { margin: 0; color: #8a9a8d; font-size: 11px; }
 
 /* 페이지네이션 */

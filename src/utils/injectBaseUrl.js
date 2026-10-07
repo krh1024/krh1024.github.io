@@ -32,7 +32,8 @@ export function injectBaseUrl(html) {
     content = content.replace(/(\sstyle="[^"]*?)white-space\s*:\s*pre\s*;?\s*/gi, '$1')
 
     // img src 상대 경로에 API 베이스 URL 주입
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
+    // VITE_API_BASE_URL 이 빈 값일 경우 하드코딩 fallback 사용
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://kimdochi-api.duckdns.org').replace(/\/$/, '')
     return content.replace(
         /<img([^>]*?)\ssrc="(?!https?:\/\/)([^"]+)"/gi,
         (_, attrs, path) =>
