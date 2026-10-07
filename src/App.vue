@@ -255,6 +255,6 @@ h1 span { color: #568069; }
 
 /* 2026-10-06 by codex (User: user) - Summernote 인라인 white-space: pre 모바일 가로 잘림 방지
    scoped :deep() 은 빌드 후 해시 선택자로 인라인 스타일을 이기지 못하므로 전역 CSS로 처리 */
-.contents-bar * { white-space: normal !important; }
+.contents-bar * { white-space: normal !important; overflow-wrap: anywhere; }
 .contents-bar pre { white-space: pre-wrap !important; }
 </style>
